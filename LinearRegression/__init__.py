@@ -1,0 +1,2 @@
+from .batch_gradient_descent import BatchGradientDescentModel
+from .stochastic_gradient_descent import StochasticGradientDescentModel
