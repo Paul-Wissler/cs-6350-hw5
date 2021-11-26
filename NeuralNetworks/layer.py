@@ -18,9 +18,11 @@ class Layer:
         self.activation_fn = activation_fn
 
     def eval(self, x: np.ndarray) -> np.ndarray:
-        z = np.zeros(self.node_count + 1)
-        z[0] = 1  # 0th index is reserved for the bias
-        z[1:] = sigmoid(np.dot(self.W, x.T))
+        if len(x.shape) == 1:
+            x = x.reshape(1, x.shape[0])
+        z = np.zeros([x.shape[0], self.node_count + 1])
+        z[:, 0] = 1  # 0th index is reserved for the bias
+        z[:, 1:] = sigmoid(np.dot(x, self.W.T))
         return z
 
 
