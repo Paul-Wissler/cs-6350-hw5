@@ -46,7 +46,6 @@ class NeuralNetwork:
             dL_dw.append(dL_dy * np.dot(inner_coef.T, z))
             i += 1
         dL_dw.reverse()
-        print(dL_dw)
         return dL_dw
 
     # TODO: This is a very weak function, should be able to handle
