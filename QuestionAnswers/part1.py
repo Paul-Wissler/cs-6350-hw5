@@ -94,13 +94,17 @@ def q3():
     dz21_dz11 = w21[1]
     dz22_dz11 = w22[1]
     dz11_dw11 = x
-    dL_dw11 = dL_dy * (dy_dz21 * dz21_dz11 + dy_dz22 * dz22_dz11) * dz11_dw11
+    dL_dw11 = dL_dy * (
+        dy_dz21 * dz21_dz11 + dy_dz22 * dz22_dz11
+    ) * dz11_dw11
     print('dL_dw11', dL_dw11)
 
     dz21_dz12 = w21[2]
     dz22_dz12 = w22[2]
     dz12_dw12 = x
-    dL_dw11 = dL_dy * (dy_dz21 * dz21_dz12 + dy_dz22 * dz22_dz12) * dz12_dw12
+    dL_dw11 = dL_dy * (
+        dy_dz21 * dz21_dz12 + dy_dz22 * dz22_dz12
+    ) * dz12_dw12
     print('dL_dw12', dL_dw11)
 
     # FORWARD PASS
