@@ -25,10 +25,9 @@ def q2a():
             [1, 2, 3]
         ]
     )
-    # print(layer1.W)
-    # x = np.array([1, 1, 1])
+    print(layer1.W)
     z1 = layer1.eval(np.array([1, 1, 1]))
-    # print(z1)
+    print(z1)
 
     layer2 = nn.Layer(3, 2)
     layer2.W = np.array(
@@ -37,20 +36,20 @@ def q2a():
             [1, 2, 3]
         ]
     )
-    # print(layer2.W)
+    print(layer2.W)
     z2 = layer2.eval(z1)
-    # print(z2)
+    print(z2)
 
     layer3 = nn.OutputLayer(3, 1)
     layer3.W = np.array([[-1, 2, -1.5]])
-    # print(layer3.W)
+    print(layer3.W)
     y = layer3.eval(z2)
-    # print(y)
+    print(y)
 
     network.add_hidden_layers([layer1, layer2])
     network.add_output_layer(layer3)
 
-    # print(network.eval(X.copy()))
+    print(network.eval(X.copy()))
 
     network.calc_gradient(X.copy(), 1)
 
@@ -79,7 +78,7 @@ def q2b():
         network.add_hidden_layers([layer1, layer2])
         network.add_output_layer(layer3)
 
-        network.train(X.copy(), y.copy(), epochs=1)
+        network.train(X.copy(), y.copy(), epochs=10)
         print('\nLAYERS', node_count)
         print('TRAINING ERROR:', network.test(X.copy(), y.copy()))
         print('TEST ERROR:', network.test(X_test.copy(), y_test.copy()))
@@ -87,24 +86,26 @@ def q2b():
     # Q2b
 
     # LAYERS 5
-    # TRAINING ERROR: 0.9552752293577982
-    # TEST ERROR: 0.938
+    # TRAINING ERROR: 0.9357798165137615
+    # TEST ERROR: 0.93
 
     # LAYERS 10
-    # TRAINING ERROR: 0.9701834862385321
-    # TEST ERROR: 0.964
+    # TRAINING ERROR: 0.9736238532110092
+    # TEST ERROR: 0.968
+    # C:\Users\pwiss\OneDrive\Documents\GitHub\cs-6350-hw5\NeuralNetworks\activation_functions.py:5: RuntimeWarning: overflow encountered in exp
+    #   return 1 / (1 + np.exp(-x))
 
     # LAYERS 25
-    # TRAINING ERROR: 0.963302752293578
-    # TEST ERROR: 0.952
+    # TRAINING ERROR: 0.9518348623853211
+    # TEST ERROR: 0.946
 
     # LAYERS 50
-    # TRAINING ERROR: 0.8795871559633027
-    # TEST ERROR: 0.86
+    # TRAINING ERROR: 0.9403669724770642
+    # TEST ERROR: 0.952
 
     # LAYERS 100
-    # TRAINING ERROR: 0.6318807339449541
-    # TEST ERROR: 0.634
+    # TRAINING ERROR: 0.6410550458715596
+    # TEST ERROR: 0.642
 
 
 def q2c():
@@ -129,7 +130,7 @@ def q2c():
         network.add_hidden_layers([layer1, layer2])
         network.add_output_layer(layer3)
 
-        network.train(X.copy(), y.copy(), epochs=1)
+        network.train(X.copy(), y.copy(), epochs=10)
         print('\nLAYERS', node_count)
         print('TRAINING ERROR:', network.test(X.copy(), y.copy()))
         print('TEST ERROR:', network.test(X_test.copy(), y_test.copy()))
@@ -137,24 +138,24 @@ def q2c():
     # Q2c
 
     # LAYERS 5
-    # TRAINING ERROR: 0.5538990825688074
-    # TEST ERROR: 0.558
+    # TRAINING ERROR: 0.786697247706422
+    # TEST ERROR: 0.794
 
     # LAYERS 10
-    # TRAINING ERROR: 0.7373853211009175
-    # TEST ERROR: 0.754
+    # TRAINING ERROR: 0.9288990825688074
+    # TEST ERROR: 0.928
 
     # LAYERS 25
-    # TRAINING ERROR: 0.9610091743119266
-    # TEST ERROR: 0.95
+    # TRAINING ERROR: 0.9357798165137615
+    # TEST ERROR: 0.934
 
     # LAYERS 50
-    # TRAINING ERROR: 0.966743119266055
-    # TEST ERROR: 0.954
+    # TRAINING ERROR: 0.948394495412844
+    # TEST ERROR: 0.932
 
     # LAYERS 100
-    # TRAINING ERROR: 0.8704128440366973
-    # TEST ERROR: 0.852
+    # TRAINING ERROR: 0.8692660550458715
+    # TEST ERROR: 0.856
 
 
 def q2e():
