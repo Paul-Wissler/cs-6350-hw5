@@ -79,31 +79,31 @@ def q2b():
         network.add_output_layer(layer3)
 
         network.train(X.copy(), y.copy(), epochs=10)
-        print('\nLAYERS', node_count)
+        print('\nWIDTH', node_count)
         print('TRAINING ERROR:', network.test(X.copy(), y.copy()))
         print('TEST ERROR:', network.test(X_test.copy(), y_test.copy()))
     
     # Q2b
 
-    # LAYERS 5
+    # WIDTH 5
     # TRAINING ERROR: 0.9357798165137615
     # TEST ERROR: 0.93
 
-    # LAYERS 10
+    # WIDTH 10
     # TRAINING ERROR: 0.9736238532110092
     # TEST ERROR: 0.968
     # C:\Users\pwiss\OneDrive\Documents\GitHub\cs-6350-hw5\NeuralNetworks\activation_functions.py:5: RuntimeWarning: overflow encountered in exp
     #   return 1 / (1 + np.exp(-x))
 
-    # LAYERS 25
+    # WIDTH 25
     # TRAINING ERROR: 0.9518348623853211
     # TEST ERROR: 0.946
 
-    # LAYERS 50
+    # WIDTH 50
     # TRAINING ERROR: 0.9403669724770642
     # TEST ERROR: 0.952
 
-    # LAYERS 100
+    # WIDTH 100
     # TRAINING ERROR: 0.6410550458715596
     # TEST ERROR: 0.642
 
@@ -131,29 +131,29 @@ def q2c():
         network.add_output_layer(layer3)
 
         network.train(X.copy(), y.copy(), epochs=10)
-        print('\nLAYERS', node_count)
+        print('\nWIDTH', node_count)
         print('TRAINING ERROR:', network.test(X.copy(), y.copy()))
         print('TEST ERROR:', network.test(X_test.copy(), y_test.copy()))
 
     # Q2c
 
-    # LAYERS 5
+    # WIDTH 5
     # TRAINING ERROR: 0.786697247706422
     # TEST ERROR: 0.794
 
-    # LAYERS 10
+    # WIDTH 10
     # TRAINING ERROR: 0.9288990825688074
     # TEST ERROR: 0.928
 
-    # LAYERS 25
+    # WIDTH 25
     # TRAINING ERROR: 0.9357798165137615
     # TEST ERROR: 0.934
 
-    # LAYERS 50
+    # WIDTH 50
     # TRAINING ERROR: 0.948394495412844
     # TEST ERROR: 0.932
 
-    # LAYERS 100
+    # WIDTH 100
     # TRAINING ERROR: 0.8692660550458715
     # TEST ERROR: 0.856
 

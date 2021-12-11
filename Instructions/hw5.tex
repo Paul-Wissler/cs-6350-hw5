@@ -72,6 +72,55 @@
 \section{Paper Problems [40 points]}
 \begin{enumerate}
 	\item~[5 points] (Warm up) Suppose we have a composite function, $z = \sigma(y_1^2 +y_2y_3) $, where  $y_1 = 3x$, $y_2 = e^{-x}$, $y_3 = \mathrm{sin}(x)$, and $\sigma(\cdot)$ is the sigmoid activation function . Please use the chain rule to derive $\frac{\partial z}{\partial x}$ and  compute the derivative at $x=0$. 
+	
+	\emph{Answer}
+	
+	\[
+	    z = \sigma (y_1^2 + y_2 y_3) = (1 + e^{-y_1^2 - y_2 y_3})^{-1}
+	\]
+	
+	\[
+	    \frac{dz}{dx} = \frac{dz}{dy_1} \frac{dy_1}{dx} + \frac{dz}{dy_2} \frac{dy_2}{dx} + \frac{dz}{dy_3} \frac{dy_3}{dx}
+	\]
+	
+	Solving for each term,
+	
+	\[
+	    \frac{dz}{dy_1} = \frac{2 y_1 e^{-y_1^2 - y_2 y_3}}{(1 + e^{-y_1^2 - y_2 y_3})^2}
+	\]
+	
+	\[
+	    \frac{dy_1}{dx} = 3
+	\]
+	
+	\[
+	    \frac{dz}{dy_2} = \frac{y_3 e^{-y_1^2 - y_2 y_3}}{(1 + e^{-y_1^2 - y_2 y_3})^2}
+	\]
+	
+	\[
+	    \frac{dy_2}{dx} = -e^{-x}
+	\]
+	
+	\[
+	    \frac{dz}{dy_3} = \frac{y_2 e^{-y_1^2 - y_2 y_3}}{(1 + e^{-y_1^2 - y_2 y_3})^2}
+	\]
+	
+	\[
+	    \frac{dy_3}{dx} = cos(x)
+	\]
+	
+	Plugging these terms back in,
+	
+	\[
+	    \frac{dz}{dx} = \frac{e^{-9x^2 - e^{-x} sin(x)}}{(1 + exp(-9x^2 - e^{-x} sin(x)))^2} (18x - e^{-2x} + sin(x) cos(x))
+	\]
+	
+	Checking at 0,
+	
+	\[
+	    \frac{dz(0)}{dx} = \frac{1}{4} (0 -1 + 0) = - \frac{1}{4}
+	\]
+	
 	\begin{figure*}
 		\centering
 		\includegraphics[width=1.0\textwidth]{./3-layer-NN.pdf}
@@ -108,6 +157,177 @@
 	\item~[5 points] Suppose we have a three-layered feed-forward neural network in hand. The architecture and the weights are defined in Figure \ref{fig:3nn}. We use the sigmoid activation function. Note that the shaded variables are the constant feature $1$, \ie $x_0 = z_{0}^1 = z_{0}^2 = 1$. As we discussed in the class, they are used to account for the bias parameters. 
 	We have the values of all the edge weights in Table \ref{tb:w}. Now, given a new input example $\x=[1, 1, 1]$. Please use the forward pass to compute the output $y$. Please list every step in your computation, namely, how you calculate the variable value in each hidden unit, and how  you combine the variables in one layer to compute each variable in the next layer. Please be aware of the subtle difference in computing the variable value in the last layer (we emphasized it in the class). 
 	
+	\emph{Answer}
+	
+	Let's define some terms.
+	
+	\[
+	    \x = \begin{bmatrix}
+	    1 \\
+	    1 \\
+	    1 \\
+	    \end{bmatrix}, \w^1_1 = \begin{bmatrix}
+	    -1\\
+	    -2 \\
+	    -3 \\
+	    \end{bmatrix},  \w^1_2 = \begin{bmatrix}
+	    1\\
+	    2 \\
+	    3 \\
+	    \end{bmatrix},  \z_1 = \begin{bmatrix}
+	    z^1_0\\
+	    z^1_1 \\
+	    z^1_2 \\
+	    \end{bmatrix}, \w^2_1 = \begin{bmatrix}
+	    -1\\
+	    -2 \\
+	    -3 \\
+	    \end{bmatrix},  \w^2_2 = \begin{bmatrix}
+	    1\\
+	    2 \\
+	    3 \\
+	    \end{bmatrix},  \z_2 = \begin{bmatrix}
+	    z^2_0\\
+	    z^2_1 \\
+	    z^2_2 \\
+	    \end{bmatrix}
+    \]
+    \[
+        \w^3_1 = \begin{bmatrix}
+	    -1\\
+	    2 \\
+	    -1.5 \\
+	    \end{bmatrix}
+	\]
+	
+	Then,
+	
+	\[
+	    z^1_1 = \sigma(\x^\top \w^1_1) = 0.0025
+	\]
+	\[
+	    z^1_2 = \sigma(\x^\top \w^1_2) = 0.9975
+	\]
+	\[
+	    z^2_1 = \sigma(\z_1^\top \w^2_1) = 0.0180
+	\]
+	\[
+	    z^2_2 = \sigma(\z_1^\top \w^2_2) = 0.9820
+	\]
+	\[
+	    y = \z_2^\top \w^3_1 = -2.4369
+	\]
+	
+	The code for computing this can be found in the function q2 of Listing 1.
+	
+	\begin{lstlisting}[language=Python, caption=Functions used to generate results for Part 1 Questions 2 and 3]
+import math
+import numpy as np
+
+
+def q2():
+    x = np.array([1, 1, 1])
+    
+    w11 = np.array([-1, -2, -3])
+    w12 = np.array([1, 2, 3])
+    
+    w21 = np.array([-1, -2, -3])
+    w22 = np.array([1, 2, 3])
+
+    w31 = np.array([-1, 2, -1.5])
+
+    z11 = sigmoid(np.dot(x.T, w11))
+    print('z11:', z11)
+
+    z12 = sigmoid(np.dot(x.T, w12))
+    print('z12:', z12)
+
+    z1 = np.array([1, z11, z12])
+
+    z21 = sigmoid(np.dot(z1.T, w21))
+    print('z21:', z21)
+
+    z22 = sigmoid(np.dot(z1.T, w22))
+    print('z22:', z22)
+
+    z2 = np.array([1, z21, z22])
+
+    y = np.dot(z2.T, w31)
+    print('y:', y)
+
+
+def q3():
+    # FORWARD PASS CODE
+    print('\nFORWARD PASS')
+    x = np.array([1, 1, 1])
+    
+    w11 = np.array([-1, -2, -3])
+    w12 = np.array([1, 2, 3])
+
+    w21 = np.array([-1, -2, -3])
+    w22 = np.array([1, 2, 3])
+    
+    w31 = np.array([-1, 2, -1.5])
+    
+    z11 = sigmoid(np.dot(x.T, w11))
+    print('z11:', z11)
+    
+    z12 = sigmoid(np.dot(x.T, w12))
+    print('z12:', z12)
+    
+    z1 = np.array([1, z11, z12])
+    
+    z21 = sigmoid(np.dot(z1.T, w21))
+    print('z21:', z21)
+    
+    z22 = sigmoid(np.dot(z1.T, w22))
+    print('z22:', z22)
+    
+    z2 = np.array([1, z21, z22])
+    
+    y = np.dot(z2.T, w31)
+    print('y:', y)
+
+    # BP
+    print('\nBP')
+    print('\nLAYER 3')
+    dL_dy = y - 1
+    dy_dw31 = z2
+    dL_dw31 = dL_dy * dy_dw31
+    print('dL_dw31', dL_dw31)
+
+    print('\nLAYER 2')
+    dy_dz21 = w31[1]
+    dz21_dw21 = z1
+    dL_dw21 = dL_dy * dy_dz21 * dz21_dw21
+    print('dL_dw21', dL_dw21)
+
+    dy_dz22 = w31[2]
+    dz22_dw22 = z1
+    dL_dw22 = dL_dy * dy_dz22 * dz22_dw22
+    print('dL_dw22', dL_dw22)
+
+    print('\nLAYER 1')
+    dz21_dz11 = w21[1]
+    dz22_dz11 = w22[1]
+    dz11_dw11 = x
+    dL_dw11 = dL_dy * (
+        dy_dz21 * dz21_dz11 + dy_dz22 * dz22_dz11
+    ) * dz11_dw11
+    print('dL_dw11', dL_dw11)
+
+    dz21_dz12 = w21[2]
+    dz22_dz12 = w22[2]
+    dz12_dw12 = x
+    dL_dw11 = dL_dy * (
+        dy_dz21 * dz21_dz12 + dy_dz22 * dz22_dz12
+    ) * dz12_dw12
+    print('dL_dw12', dL_dw11)
+
+
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
+	\end{lstlisting}
 	%back-propgation
 	
 	%logistic-regression
@@ -117,7 +337,107 @@
 	\]
 	To make the prediction, we will use the 3 layer neural network shown in Figure \ref{fig:3nn}, with the sigmoid activation function. Given the weights specified in Table \ref{tb:w}, please use the back propagation (BP) algorithm to compute the derivative of the loss $L$ over all the weights, $\{\frac{\partial L}{\partial w^{m}_{ij}}\}$. Please list every step of your BP calculation. In each step, you should show how you compute and cache the new (partial) derivatives from the previous ones, and then how to calculate the partial derivative over the weights accordingly.  
 	
+	\emph{Answer}
 	
+	We use the terms and results found in Part 1 Question 2.
+	
+	We know that $\frac{dL}{dy} = y - y^*$ and $\frac{dL}{dw_{ij}} = \frac{dL}{dy} \frac{dy}{dw_{ij}}$, so we easily find that,
+	
+	\[
+	    \frac{dy}{d\w^3_1} = \begin{bmatrix}
+	        z^2_0 \\
+	        z^2_1 \\
+	        z^2_2
+	    \end{bmatrix}
+	\]
+	
+	Combining these, we find,
+	
+	\[
+	    \frac{dL}{d\w^3_1} = \frac{dL}{dy} \frac{dy}{d\w^3_1} = (y - 1) \begin{bmatrix}
+	        z^2_0 \\
+	        z^2_1 \\
+	        z^2_2
+	    \end{bmatrix} = \begin{bmatrix}
+	        -3.4368 \\
+	        -0.0620 \\
+	        -3.3750
+	    \end{bmatrix}
+	\]
+	
+	Moving onto Layer 2 from Layer 3, we know that $\frac{dy}{dz^2_1} = w^3_{11}$ and $\frac{dL}{d\w^2_1} = \frac{dL}{dy} \frac{dy}{dz^2_1} \frac{dz^2_1} {d\w^2_1}$. We find that,
+	
+	\[
+	    \frac{dz^2_1}{d\w^2_1} = \begin{bmatrix}
+	        z^1_0 \\
+	        z^1_1 \\
+	        z^1_2
+	    \end{bmatrix} => \frac{dL}{d\w^2_1} = (y - 1) (w^3_{11}) \begin{bmatrix}
+	        z^1_0 \\
+	        z^1_1 \\
+	        z^1_2
+	    \end{bmatrix} = \begin{bmatrix}
+	        -6.8738 \\
+	        -0.0170 \\
+	        -6.8568
+	    \end{bmatrix}
+	\]
+	
+	We also know that $\frac{dy}{dz^2_2} = w^3_{21}$ and $\frac{dL}{d\w^2_2} = \frac{dL}{dy} \frac{dy}{dz^2_2} \frac{dz^2_2} {d\w^2_2}$. We find that,
+	
+	\[
+	    \frac{dz^2_2}{d\w^2_2} = \begin{bmatrix}
+	        z^1_0 \\
+	        z^1_1 \\
+	        z^1_2
+	    \end{bmatrix} => \frac{dL}{d\w^2_2} = (y - 1) (w^3_{21}) \begin{bmatrix}
+	        z^1_0 \\
+	        z^1_1 \\
+	        z^1_2
+	    \end{bmatrix} = \begin{bmatrix}
+	        5.1553 \\
+	        0.0127 \\
+	        5.1426
+	    \end{bmatrix}
+	\]
+	
+	Finally, for Layer 3 we know that $\frac{dz^2_1}{dz^1_1} = w^2_{11}$, $\frac{dz^2_2}{dz^1_1} = w^2_{12}$, and $\frac{dL}{d\w^1_1} = \frac{dL}{dy} (\frac{dy}{dz^2_1} \frac{dz^2_1}{dz^1_1} + \frac{dy}{dz^2_2} \frac{dz^2_2}{dz^1_1}) \frac{dz^1_1} {d\w^1_1}$. We find that,
+	
+	\[
+	    \frac{dz^1_1}{d\w^1_1} = \begin{bmatrix}
+	        x_0 \\
+	        x_1 \\
+	        x_2
+	    \end{bmatrix} => \frac{dL}{d\w^1_1} = (y - 1) (w^3_{11} w^2_{11} + w^3_{21} w^2_{12}) \begin{bmatrix}
+	        x_0 \\
+	        x_1 \\
+	        x_2
+	    \end{bmatrix} = \begin{bmatrix}
+	        24.0583 \\
+	        24.0583 \\
+	        24.0583
+	    \end{bmatrix}
+	\]
+	
+	We also know that $\frac{dz^2_1}{dz^1_2} = w^2_{21}$, $\frac{dz^2_2}{dz^1_2} = w^2_{22}$, and $\frac{dL}{d\w^1_2} = \frac{dL}{dy} (\frac{dy}{dz^2_1} \frac{dz^2_1}{dz^1_2} + \frac{dy}{dz^2_2} \frac{dz^2_2}{dz^1_2}) \frac{dz^1_2} {d\w^1_2}$. We find that,
+	
+	\[
+	    \frac{dz^1_2}{d\w^1_2} = \begin{bmatrix}
+	        x_0 \\
+	        x_1 \\
+	        x_2
+	    \end{bmatrix} => \frac{dL}{d\w^1_2} = (y - 1) (w^3_{11} w^2_{21} + w^3_{21} w^2_{22}) \begin{bmatrix}
+	        x_0 \\
+	        x_1 \\
+	        x_2
+	    \end{bmatrix} = \begin{bmatrix}
+	        36.0874 \\
+	        36.0874 \\
+	        36.0874
+	    \end{bmatrix}
+	\]
+	
+	The code to get these results can be found in function q3 of Listing 1.
 	
 	%calculate the subgradient
 	\item~[10 points] Suppose we have the training dataset shown in Table \ref{tb:dt}. We want to learn a logistic regression model. We initialize all the model parameters with $0$.  We assume each parameter (\ie feature weights $\{w_1, w_2, w_3\}$ and the bias $w_0$ ) comes from a standard Gaussian prior distribution, 
@@ -149,7 +469,9 @@
 \begin{enumerate}
 	\item~[2 Points] Update your machine learning library. Please check in your implementation of SVM algorithms. Remember last time you created the folders ``SVM". You can commit your code into the corresponding folders now. Please also supplement README.md with concise descriptions about how to use your code to run these algorithms (how to call the command, set the parameters, etc). Please create new folders ``Neural Networks" and ``Logistic Regression''  in the same level as these folders.  \textit{After the completion of the homework this time, please check in your implementation accordingly. }
 
-
+    \emph{Answer}
+    
+    The code for this project can be found in \href{https://github.com/Paul-Wissler/cs-6350-hw5}{https://github.com/Paul-Wissler/cs-6350-hw5}.
 
 	\item~[58 points] Now let us implement a three-layer artificial neural network for classification. We will use the dataset, ``bank-note.zip'' in Canvas. The features and labels are listed in the file ``classification/data-desc.txt''. The training data are stored in the file ``classification/train.csv'', consisting of $872$ examples. The test data are stored in ``classification/test.csv'', and comprise of $500$ examples. In both the training and test datasets, feature values and labels are separated by commas.
 	The architecture of the neural network resembles Figure \ref{fig:3nn}, but we allow an arbitrary number of  units in hidden layers (Layer 1  and 2). So please ensure your implementation has such flexibility. We will use the sigmoid activation function. 
@@ -157,17 +479,122 @@
 \begin{enumerate}
 	\item ~[25 points] Please implement the back-propagation algorithm to compute the gradient with respect to all the edge weights given one training example.  For debugging, you can use the paper problem 3 and verify if your algorithm returns the same derivatives as you manually did. 
 	
+	\emph{Answer}
+	
+	I verified this in QuestionAnswers.part2.q2a of my code. See the repo.
+	
 	\item~[17 points] Implement the stochastic gradient descent algorithm to learn the neural netowrk from the training data.  	Use the schedule of learning rate: $\gamma_t = \frac{\gamma_0}{1+\frac{\gamma_0}{d}t}	$.  Initialize the edge weights with random numbers generated from the standard Gaussian distribution. We restrict the width, \ie the number of nodes, of each hidden layer (\ie Layer 1 \& 2 ) to be identical.  Vary the width from $\{5, 10, 25, 50, 100\}$. Please tune $\gamma_0$ and $d$ to ensure convergence. Use the curve of the objective function (along with the number of updates) to diagnosis the convergence.  Don't forget to shuffle the training examples at the start of each epoch. Report the training and test error for each setting of the width.
+	
+	\emph{Answer}
+	
+	\begin{verbatim}
+Q2b
+
+LAYERS 5
+TRAINING ERROR: 0.9357798165137615
+TEST ERROR: 0.93
+
+LAYERS 10
+TRAINING ERROR: 0.9736238532110092
+TEST ERROR: 0.968
+
+LAYERS 25
+TRAINING ERROR: 0.9518348623853211
+TEST ERROR: 0.946
+
+LAYERS 50
+TRAINING ERROR: 0.9403669724770642
+TEST ERROR: 0.952
+
+LAYERS 100
+TRAINING ERROR: 0.6410550458715596
+TEST ERROR: 0.642
+	\end{verbatim}
 	
 	
 	\item~[10 points]. Now initialize all the weights with $0$, and run your training algorithm again. What is your training and test error? What do you observe and  conclude?
 	
+	\emph{Answer}
+	
+	\begin{verbatim}
+Q2c
+
+LAYERS 5
+TRAINING ERROR: 0.786697247706422
+TEST ERROR: 0.794
+
+LAYERS 10
+TRAINING ERROR: 0.9288990825688074
+TEST ERROR: 0.928
+
+LAYERS 25
+TRAINING ERROR: 0.9357798165137615
+TEST ERROR: 0.934
+
+LAYERS 50
+TRAINING ERROR: 0.948394495412844
+TEST ERROR: 0.932
+
+LAYERS 100
+TRAINING ERROR: 0.8692660550458715
+TEST ERROR: 0.856
+	\end{verbatim}
+	
+	Comparing the results, they both have similar performance (>90\% accuracy) when the width is between 10 and 50, though the Gaussian initialization seems to edge out the 0 initialization by a few points on average. Both perform poorly with a width of 100, though the Gaussian initialization performs quite a bit worse, but also quite a bit better with a width of 5. I would conclude that initialization matters less than creating a good structure for your neural net, but if the structure is relatively thin, then a proper initialization can help find the true minimum of the objective function.
+	
 	\item~[6 points]. As compared with the performance of SVM (and the logistic regression you chose to implement it; see Problem 3), what do you conclude (empirically) about the neural network?
+	
+	\emph{Answer}
+	
+	It is easier to tune hyperparameters for a neural net, though the different structure introduces a host of different design problems. Also, when the SVM performed well, it managed to reach perfect separability, whereas the neural net did not with my specific implementation. Based purely on these results, I would conclude that the SVM has a better potential to reach perfect separability if tuned properly.
 	
 	
 	\item~[\textbf{Bonus}]~[30 points] Please use PyTorch (or TensorFlow if you want) to fulfill the neural network training and prediction. Please try two activation functions, ``tanh'' and ``RELU''.  For ``tanh", please use the ``Xavier' initialization; and for ``RELU'', please use the ``he'' initialization. You can implement these initializations by yourselves or use PyTorch (or TensorFlow) library. 
 	Vary the depth from $\{3, 5, 9\} $ and width from $\{5, 10, 25, 50, 100\}$. Pleas use the Adam optimizer for training. The default settings of Adam should be sufficient (\eg initial learning rate is set to $10^{-3}$). 
 	 Report the training and test error with each (depth, width) combination. What do you observe and conclude? Note that, we won't provide any link or manual for you to work on this bonus problem. It is YOUR JOB to search the documentation, find  code snippets, test, and debug with PyTorch (or TensorFlow) to ensure the correct usage. This is what all machine learning practitioners do in practice. 
+	 
+	 \emph{Answer}
+	 
+	 The results can be found in Table 3. Based on these results, it is obvious that PyTorch neural nets perform quite a bit better than mine, sometimes reaching perfect separability on the test data. This clearly indicates that, as a non-linear classifier, neural nets are quite robust. However, adding the additional complexities of varying widths, depths, and activation functions clearly indicate that in practice neural nets take quite a bit of engineering and tuning to get working well.
+	 
+	 \begin{table}[]
+	     \centering
+	     \begin{tabular}{c|cc|cc}
+	        Activation & Depth & Width & Train Error & Test Error \\ \hline\hline
+            Tanh & 3 & 5   & 91.51\% & 91.80\% \\ \hline
+            Tanh & 3 & 10  & 98.50\% & 98.40\% \\ \hline
+            Tanh & 3 & 25  & 99.31\% & 99.40\% \\ \hline
+            Tanh & 3 & 50  & 100.0\% & 100.0\% \\ \hline
+            Tanh & 3 & 100 & 100.0\% & 100.0\% \\ \hline
+            Tanh & 5 & 5   & 95.76\% & 93.80\% \\ \hline
+            Tanh & 5 & 10  & 98.51\% & 97.80\% \\ \hline
+            Tanh & 5 & 25  & 99.77\% & 99.80\% \\ \hline
+            Tanh & 5 & 50  & 99.08\% & 99.80\% \\ \hline
+            Tanh & 5 & 100 & 97.25\% & 96.80\% \\ \hline
+            Tanh & 9 & 5   & 94.15\% & 94.80\% \\ \hline
+            Tanh & 9 & 10  & 99.31\% & 99.20\% \\ \hline
+            Tanh & 9 & 25  & 97.71\% & 98.20\% \\ \hline
+            Tanh & 9 & 50  & 97.59\% & 99.77\% \\ \hline
+            Tanh & 9 & 100 & 96.79\% & 96.40\% \\ \hline
+            ReLU & 3 & 5   & 99.08\% & 98.40\% \\ \hline
+            ReLU & 3 & 10  & 90.37\% & 89.80\% \\ \hline
+            ReLU & 3 & 25  & 100.0\% & 100.0\% \\ \hline
+            ReLU & 3 & 50  & 100.0\% & 100.0\% \\ \hline
+            ReLU & 3 & 100 & 100.0\% & 100.0\% \\ \hline
+            ReLU & 5 & 5   & 93.12\% & 93.20\% \\ \hline
+            ReLU & 5 & 10  & 100.0\% & 100.0\% \\ \hline
+            ReLU & 5 & 25  & 99.89\% & 100.0\% \\ \hline
+            ReLU & 5 & 50  & 97.13\% & 96.40\% \\ \hline
+            ReLU & 5 & 100 & 83.83\% & 82.20\% \\ \hline
+            ReLU & 9 & 5   & 94.27\% & 95.20\% \\ \hline
+            ReLU & 9 & 10  & 98.85\% & 98.80\% \\ \hline
+            ReLU & 9 & 25  & 99.77\% & 99.60\% \\ \hline
+            ReLU & 9 & 50  & 100.0\% & 99.80\% \\ \hline
+            ReLU & 9 & 100 & 98.85\% & 98.80\% \\ \hline
+	     \end{tabular}
+	     \caption{Error results for Part 2 Question 2e.}
+	     \label{tab:my_label}
+	 \end{table}
 	
 \end{enumerate} 
 
@@ -186,6 +613,11 @@
 \end{enumerate}
 
 	\item~[2 Points]  After the completion, please upload the implementation to your Github repository immediately.  How do you like your own machine learning library? \textit{Although it is still light weighted, it is the proof of  your great efforts and achievement  in this class! It is an excellent start of your journey to machine learning.  Wish you further success in your future endeavours!}
+	
+	\emph{Answer}
+	
+	I like knowing that I am capable of implementing so many different algorithms. However, I wonder if perhaps this class wouldn't benefit from being split into two parts, as the workload over the short span of time felt extreme. Thank you for all your hard work this semester, and good luck!
+	
 \end{enumerate}
 
 
